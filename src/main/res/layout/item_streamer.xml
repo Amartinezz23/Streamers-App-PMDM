@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <!-- FOTO DEL STREAMER -->
+        <ImageView
+            android:id="@+id/imgStreamer"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/rounded_image"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:src="@drawable/ic_launcher_background"/>
+
+        <!-- NOMBRE -->
+        <TextView
+            android:id="@+id/txtNombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@id/imgStreamer"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="12dp"
+            tools:text="Ibai Llanos" />
+
+        <!-- CATEGORIA -->
+        <TextView
+            android:id="@+id/txtCategoria"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/purple_700"
+            app:layout_constraintStart_toStartOf="@id/txtNombre"
+            app:layout_constraintTop_toBottomOf="@id/txtNombre"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Algo" />
+
+        <!-- ICONOS DE PLATAFORMAS -->
+        <LinearLayout
+            android:id="@+id/layoutPlataformas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="6dp"
+            app:layout_constraintStart_toStartOf="@id/txtCategoria"
+            app:layout_constraintTop_toBottomOf="@id/txtCategoria">
+
+            <ImageView
+                android:id="@+id/iconTwitch"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                tools:src="@drawable/twitch"
+                android:visibility="gone"
+                android:layout_marginEnd="8dp"/>
+
+            <ImageView
+                android:id="@+id/iconYoutube"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                tools:src="@drawable/youtube"
+                android:visibility="gone"
+                android:layout_marginEnd="8dp"/>
+
+            <ImageView
+                android:id="@+id/iconKick"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                tools:src="@drawable/kick"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <!-- BOTONES DE ACCION -->
+        <LinearLayout
+            android:id="@+id/layoutBotones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageButton
+                android:id="@+id/btnPerfil"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:src="@android:drawable/ic_menu_view"
+                android:background="@android:color/transparent"
+                android:contentDescription="Ver Perfil"/>
+
+            <ImageButton
+                android:id="@+id/btnEditar"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:src="@android:drawable/ic_menu_edit"
+                android:background="@android:color/transparent"
+                android:contentDescription="Editar"/>
+
+            <ImageButton
+                android:id="@+id/btnBorrar"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:src="@android:drawable/ic_menu_delete"
+                android:background="@android:color/transparent"
+                android:contentDescription="Borrar"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
