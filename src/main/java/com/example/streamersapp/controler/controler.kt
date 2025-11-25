@@ -23,8 +23,12 @@ class Controller (val context: Context){
     }
 
     private fun onDelete(position: Int) {
-        val streamer = lista[position]
-        Toast.makeText(context, "Elimino ${streamer.nombre}", Toast.LENGTH_SHORT).show()
+        lista.removeAt(position)
+
+        val myActivity = context as MainActivity
+        myActivity.binding.myRecyclerView.adapter?.notifyItemRemoved(position)
+
+        Toast.makeText(context, "Borro el streamer", Toast.LENGTH_SHORT).show()
 
     }
 
@@ -38,7 +42,7 @@ class Controller (val context: Context){
             {
                     position-> println("Edito el streamer ${lista[position]}")
             },{
-                    position-> println("Elimino el streamer ${lista[position]}")
+                    position-> println("Elimino el streamer")
             }
 
         )
@@ -62,5 +66,6 @@ class Controller (val context: Context){
         // Asignamos el adapter al RecyclerView de la activity
         val myActivity = context as MainActivity
         myActivity.binding.myRecyclerView.adapter = adapterStreamer
+
     }
 }

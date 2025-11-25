@@ -10,8 +10,9 @@
     app:cardElevation="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="337dp"
         android:layout_height="wrap_content"
+        android:background="#F3F0FF"
         android:padding="12dp">
 
         <!-- FOTO DEL STREAMER -->
@@ -19,26 +20,26 @@
             android:id="@+id/imgStreamer"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:scaleType="centerCrop"
             android:background="@drawable/rounded_image"
+            android:scaleType="centerCrop"
 
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:src="@drawable/ic_launcher_background"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_launcher_background" />
 
         <!-- NOMBRE -->
         <TextView
             android:id="@+id/txtNombre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/imgStreamer"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="12dp"
             tools:text="Ibai Llanos" />
 
         <!-- CATEGORIA -->
@@ -46,11 +47,11 @@
             android:id="@+id/txtCategoria"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
             android:textColor="@color/purple_700"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/txtNombre"
             app:layout_constraintTop_toBottomOf="@id/txtNombre"
-            app:layout_constraintEnd_toEndOf="parent"
             tools:text="Algo" />
 
         <!-- ICONOS DE PLATAFORMAS -->
@@ -58,9 +59,9 @@
             android:id="@+id/layoutPlataformas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
             android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="@id/txtCategoria"
             app:layout_constraintTop_toBottomOf="@id/txtCategoria">
 
@@ -68,24 +69,24 @@
                 android:id="@+id/iconTwitch"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                tools:src="@drawable/twitch"
+                android:layout_marginEnd="8dp"
                 android:visibility="gone"
-                android:layout_marginEnd="8dp"/>
+                tools:src="@drawable/twitch" />
 
             <ImageView
                 android:id="@+id/iconYoutube"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                tools:src="@drawable/youtube"
+                android:layout_marginEnd="8dp"
                 android:visibility="gone"
-                android:layout_marginEnd="8dp"/>
+                tools:src="@drawable/youtube" />
 
             <ImageView
                 android:id="@+id/iconKick"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                tools:src="@drawable/kick"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                tools:src="@drawable/kick" />
         </LinearLayout>
 
         <!-- BOTONES DE ACCION -->
@@ -101,25 +102,25 @@
                 android:id="@+id/btnPerfil"
                 android:layout_width="38dp"
                 android:layout_height="38dp"
-                android:src="@android:drawable/ic_menu_view"
                 android:background="@android:color/transparent"
-                android:contentDescription="Ver Perfil"/>
+                android:contentDescription="Ver Perfil"
+                android:src="@android:drawable/ic_menu_view" />
 
             <ImageButton
                 android:id="@+id/btnEditar"
                 android:layout_width="38dp"
                 android:layout_height="38dp"
-                android:src="@android:drawable/ic_menu_edit"
                 android:background="@android:color/transparent"
-                android:contentDescription="Editar"/>
+                android:contentDescription="Editar"
+                android:src="@android:drawable/ic_menu_edit" />
 
             <ImageButton
                 android:id="@+id/btnBorrar"
                 android:layout_width="38dp"
                 android:layout_height="38dp"
-                android:src="@android:drawable/ic_menu_delete"
                 android:background="@android:color/transparent"
-                android:contentDescription="Borrar"/>
+                android:contentDescription="Borrar"
+                android:src="@android:drawable/ic_menu_delete" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

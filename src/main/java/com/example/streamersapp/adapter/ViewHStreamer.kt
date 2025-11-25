@@ -18,35 +18,30 @@ class ViewHStreamer(view: View,  val onViewProfile: (Int) -> Unit,
     val binding: ItemStreamerBinding = ItemStreamerBinding.bind(view)
 
     fun renderize(streamer: Streamer) {
-        // Nombre y categoría
         binding.txtNombre.text = streamer.nombre
         binding.txtCategoria.text = streamer.categoria
 
-        // Imagen del streamer (puede ser drawable o URL)
         Glide.with(itemView.context)
-            .load(streamer.foto) // URL o drawable local
-            .circleCrop()              // <-- hace la imagen redonda
+            .load(streamer.foto)
+            .circleCrop()
             .placeholder(R.drawable.ic_launcher_background)
             .into(binding.imgStreamer)
 
+        // ⚡ Usar siempre adapterPosition dentro del click
+        binding.btnPerfil.setOnClickListener {
+            if (adapterPosition != RecyclerView.NO_POSITION)
+                onViewProfile(adapterPosition)
+        }
 
-        binding.iconTwitch.visibility =
-            if ("Twitch" in streamer.plataformas){
-                View.VISIBLE
-            } else
-                View.GONE
-        binding.iconYoutube.visibility =
-            if ("YouTube" in streamer.plataformas){
-                View.VISIBLE
-            } else
-                View.GONE
-        binding.iconKick.visibility =
-            if ("Kick" in streamer.plataformas){
-                View.VISIBLE
-            } else
-                View.GONE
+        binding.btnEditar.setOnClickListener {
+            if (adapterPosition != RecyclerView.NO_POSITION)
+                onEdit(adapterPosition)
+        }
 
-        setOnClickListener(adapterPosition)
+        binding.btnBorrar.setOnClickListener {
+            if (adapterPosition != RecyclerView.NO_POSITION)
+                onDelete(adapterPosition)
+        }
     }
 
     private fun setOnClickListener(position: Int) {
