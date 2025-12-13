@@ -6,17 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.streamersapp.models.Streamer
 import com.example.streamersapp.R
 
-
 // Adapter para RecyclerView de Streamers
-class AdapterStreamer(var listStreamers: MutableList<Streamer>, val onViewProfile: (position: Int) -> Unit,
+class AdapterStreamer(var listStreamers: MutableList<Streamer>,
+                      val onViewProfile: (position: Int) -> Unit,
                       val onEdit: (position: Int) -> Unit,
                       val onDelete: (position: Int) -> Unit) :
-
     RecyclerView.Adapter<ViewHStreamer>() {
 
     /*
-     Método que crea la view del ViewHolderStreamer
-     */
+    Método que crea la view del ViewHolderStreamer
+    */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHStreamer {
         val layoutInflater = LayoutInflater.from(parent.context)
         val layoutItemStreamer = R.layout.item_streamer
@@ -29,20 +28,19 @@ class AdapterStreamer(var listStreamers: MutableList<Streamer>, val onViewProfil
     }
 
     /*
-     Método que renderiza los datos de cada streamer en la view.
-     */
+    Método que renderiza los datos de cada streamer en la view.
+    */
     override fun onBindViewHolder(holder: ViewHStreamer, position: Int) {
-        holder.renderize(listStreamers[position])
+        val streamer = listStreamers[position]
 
-        holder.binding.btnPerfil.setOnClickListener { onViewProfile(position) }
-        holder.binding.btnEditar.setOnClickListener { onEdit(position) }
-        holder.binding.btnBorrar.setOnClickListener { onDelete(position) }
+
+
+
+        holder.renderize(streamer)
     }
 
     /*
-     Método que devuelve el número de objetos a representar en el RecyclerView.
-     */
+    Método que devuelve el número de objetos a representar en el RecyclerView.
+    */
     override fun getItemCount(): Int = listStreamers.size
 }
-
-

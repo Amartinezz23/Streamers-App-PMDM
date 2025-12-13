@@ -6,7 +6,7 @@ class Streamer(
     var plataformas: List<String>,   // Ej: listOf("Twitch", "YouTube")
     var categoria: String,
     var urlPerfil: String,
-    var foto: Int
+    var foto: Any
 ) {
     override fun toString(): String {
         return "Streamer: $nombre\n" +
