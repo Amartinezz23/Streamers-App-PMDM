@@ -24,7 +24,7 @@ class ViewHStreamer(
 
         when (streamer.foto) {
             is Int -> {
-                // Imagen local (drawable)
+
                 Glide.with(itemView.context)
                     .load(streamer.foto as Int)
                     .diskCacheStrategy(DiskCacheStrategy.NONE) // No cachear en disco
@@ -36,7 +36,7 @@ class ViewHStreamer(
                     .into(binding.imgStreamer)
             }
             is String -> {
-                // Imagen desde URL
+
                 Glide.with(itemView.context)
                     .load(streamer.foto as String)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -48,7 +48,7 @@ class ViewHStreamer(
                     .into(binding.imgStreamer)
             }
             else -> {
-                // Fallback
+
                 binding.imgStreamer.setImageResource(R.drawable.ic_launcher_background)
             }
         }
@@ -86,9 +86,7 @@ class ViewHStreamer(
         }
     }
 
-    /**
-     * Muestra los iconos de plataformas según la lista
-     */
+
     private fun mostrarPlataformas(plataformas: List<String>) {
         // Ocultar todos por defecto
         binding.iconTwitch.visibility = View.GONE

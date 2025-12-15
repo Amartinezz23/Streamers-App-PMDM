@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/streamersFragment">
+
+    <fragment
+        android:id="@+id/streamersFragment"
+        android:name="com.example.streamersapp.StreamersFragment"
+        android:label="Streamers"
+        tools:layout="@layout/fragment_streamers" />
+
+    <fragment
+        android:id="@+id/favoritosFragment"
+        android:name="com.example.streamersapp.FavoritosFragment"
+        android:label="Favoritos"
+        tools:layout="@layout/fragment_favoritos" />
+
+    <fragment
+        android:id="@+id/ajustesFragment"
+        android:name="com.example.streamersapp.AjustesFragment"
+        android:label="Ajustes"
+        tools:layout="@layout/fragment_ajustes" />
+
+</navigation>

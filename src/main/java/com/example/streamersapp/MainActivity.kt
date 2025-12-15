@@ -2,43 +2,87 @@ package com.example.streamersapp
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.streamersapp.controler.Controller
 import com.example.streamersapp.databinding.ActivityMainBinding
 import com.example.streamersapp.databinding.DialogAddStreamerBinding
 import com.example.streamersapp.models.Streamer
-import com.example.streamersapp.databinding.DialogDeleteConfirmationBinding
-
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     lateinit var controller: Controller
+
+
+    private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Inicializamos el controlador
+        // Toolbar
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        // Obtener el NavController
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+
+        //
+        // streamersFragment
+        appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.streamersFragment)
+        )
+
+        // Vinculacion Toolbar con el NavController y AppBarConfiguration
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
+
         controller = Controller(this)
+    }
 
-        // ✅ Configurar el RecyclerView
-        binding.myRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
-        binding.myRecyclerView.adapter = controller.adapter
 
-        // Configurar botón flotante para añadir
-        binding.btnAdd.setOnClickListener {
-            showAddStreamerDialog()
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+
+    // Eventos del menú de opciones
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_favoritos -> {
+                navController.navigate(R.id.favoritosFragment)
+                true
+            }
+            R.id.menu_ajustes -> {
+                navController.navigate(R.id.ajustesFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
-    /**
-     * Muestra un diálogo para añadir un nuevo streamer
-     */
-    private fun showAddStreamerDialog() {
+    // Permitir navegación hacia atrás con el botón de la Toolbar
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
+    }
+
+
+    fun showAddStreamerDialog() {
         val dialogBinding = DialogAddStreamerBinding.inflate(LayoutInflater.from(this))
 
         val dialog = AlertDialog.Builder(this)
@@ -64,12 +108,12 @@ class MainActivity : AppCompatActivity() {
 
             // Validación básica
             if (nombre.isEmpty()) {
-                Toast.makeText(this, "⚠️ El nombre es obligatorio", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, " El nombre es obligatorio", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (categoria.isEmpty()) {
-                Toast.makeText(this, "⚠️ La categoría es obligatoria", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "La categoría es obligatoria", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -102,16 +146,14 @@ class MainActivity : AppCompatActivity() {
             // Añadir a la lista
             controller.addStreamer(nuevoStreamer)
 
-            Toast.makeText(this, "✅ $nombre añadido correctamente", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "nombre añadido correctamente", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 
         dialog.show()
     }
 
-    /**
-     * Muestra un diálogo para editar un streamer existente
-     */
+
     fun showEditStreamerDialog(position: Int) {
         val streamer = controller.lista[position]
         val dialogBinding = com.example.streamersapp.databinding.DialogEditStreamerBinding.inflate(LayoutInflater.from(this))
@@ -139,7 +181,7 @@ class MainActivity : AppCompatActivity() {
             dialog.dismiss()
         }
 
-        // Configurar botón Guardar
+
         dialogBinding.btnGuardar.setOnClickListener {
             val nombre = dialogBinding.etNombre.text.toString().trim()
             val categoria = dialogBinding.etCategoria.text.toString().trim()
@@ -147,14 +189,14 @@ class MainActivity : AppCompatActivity() {
             val urlPerfil = dialogBinding.etUrlPerfil.text.toString().trim()
             val urlFoto = dialogBinding.etUrlFoto.text.toString().trim()
 
-            // Validación básica
+
             if (nombre.isEmpty()) {
-                Toast.makeText(this, "⚠️ El nombre es obligatorio", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "El nombre es obligatorio", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (categoria.isEmpty()) {
-                Toast.makeText(this, "⚠️ La categoría es obligatoria", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, " La categoría es obligatoria", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -185,21 +227,19 @@ class MainActivity : AppCompatActivity() {
             // Actualizar en la lista
             controller.editStreamer(position, streamerActualizado)
 
-            Toast.makeText(this, "✅ $nombre actualizado correctamente", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "$nombre actualizado correctamente", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 
         dialog.show()
     }
 
-    /**
-     * Muestra un diálogo de confirmación para eliminar un streamer
-     */
+
     fun showDeleteConfirmationDialog(position: Int) {
         val streamer = controller.lista[position]
         val dialogBinding = com.example.streamersapp.databinding.DialogDeleteConfirmationBinding.inflate(LayoutInflater.from(this))
 
-        // Personalizar el mensaje
+
         dialogBinding.tvMessage.text = "¿Deseas borrar a ${streamer.nombre}?"
 
         val dialog = AlertDialog.Builder(this)
@@ -209,15 +249,15 @@ class MainActivity : AppCompatActivity() {
 
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        // Botón NO
+
         dialogBinding.btnNo.setOnClickListener {
             dialog.dismiss()
         }
 
-        // Botón SÍ
+
         dialogBinding.btnSi.setOnClickListener {
             controller.deleteStreamer(position)
-            Toast.makeText(this, "🗑️ ${streamer.nombre} eliminado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "${streamer.nombre} eliminado", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 
