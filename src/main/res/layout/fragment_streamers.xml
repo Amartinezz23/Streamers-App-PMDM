@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="#E0D4FF">
 
-    <!-- RecyclerView para los streamers -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myRecyclerView"
         android:layout_width="match_parent"
@@ -13,7 +12,6 @@
         android:padding="16dp"
         android:clipToPadding="false"/>
 
-    <!-- FloatingActionButton para añadir streamers -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAdd"
         android:layout_width="wrap_content"

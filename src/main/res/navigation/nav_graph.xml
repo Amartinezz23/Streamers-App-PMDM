@@ -8,8 +8,28 @@
     <fragment
         android:id="@+id/streamersFragment"
         android:name="com.example.streamersapp.StreamersFragment"
-        android:label="Streamers"
-        tools:layout="@layout/fragment_streamers" />
+        android:label="Mis Streamers"
+        tools:layout="@layout/fragment_streamers">
+
+        <action
+            android:id="@+id/action_streamersFragment_to_detailFragment"
+            app:destination="@id/detailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.streamersapp.DetailFragment"
+        android:label="Detalles del Streamer"
+        tools:layout="@layout/fragment_detail">
+
+        <argument
+            android:name="streamerId"
+            app:argType="integer" />
+    </fragment>
 
     <fragment
         android:id="@+id/favoritosFragment"
@@ -22,5 +42,17 @@
         android:name="com.example.streamersapp.AjustesFragment"
         android:label="Ajustes"
         tools:layout="@layout/fragment_ajustes" />
+
+    <fragment
+        android:id="@+id/ejemploFragment1"
+        android:name="com.example.streamersapp.EjemploFragment1"
+        android:label="Estadísticas"
+        tools:layout="@layout/fragment_ejemplo1" />
+
+    <fragment
+        android:id="@+id/ejemploFragment2"
+        android:name="com.example.streamersapp.EjemploFragment2"
+        android:label="Explorar"
+        tools:layout="@layout/fragment_ejemplo2" />
 
 </navigation>

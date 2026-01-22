@@ -1,84 +1,145 @@
 package com.example.streamersapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.streamersapp.controler.Controller
 import com.example.streamersapp.databinding.ActivityMainBinding
 import com.example.streamersapp.databinding.DialogAddStreamerBinding
 import com.example.streamersapp.models.Streamer
+import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     lateinit var controller: Controller
 
-
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Toolbar
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
 
-        // Obtener el NavController
+        setSupportActionBar(binding.toolbar)
+
+
+        drawerLayout = binding.drawerLayout
+        val navigationView: NavigationView = binding.navView
+
+
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        //
-        // streamersFragment
+
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.streamersFragment)
+            setOf(
+                R.id.streamersFragment,
+                R.id.favoritosFragment,
+                R.id.ajustesFragment,
+                R.id.ejemploFragment1,
+                R.id.ejemploFragment2
+            ),
+            drawerLayout
         )
 
-        // Vinculacion Toolbar con el NavController y AppBarConfiguration
+
         setupActionBarWithNavController(navController, appBarConfiguration)
 
 
+        navigationView.setupWithNavController(navController)
+
+
+        binding.bottomNav?.setupWithNavController(navController)
+
+
         controller = Controller(this)
+
+
+        setupDrawerHeader(navigationView)
+
+
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_logout -> {
+                    performLogout()
+                    true
+                }
+                else -> {
+                    menuItem.isChecked = true
+                    drawerLayout.closeDrawers()
+                    navController.navigate(menuItem.itemId)
+                    true
+                }
+            }
+        }
     }
 
+    private fun setupDrawerHeader(navigationView: NavigationView) {
+        val headerView = navigationView.getHeaderView(0)
+        val tvUsername = headerView.findViewById<TextView>(R.id.tvHeaderUsername)
+
+
+        val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val username = prefs.getString("username", "Usuario")
+
+        tvUsername.text = username
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         return true
     }
 
-    // Eventos del menú de opciones
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.menu_favoritos -> {
-                navController.navigate(R.id.favoritosFragment)
+            R.id.menu_search -> {
+                Toast.makeText(this, "Buscador - Próximamente", Toast.LENGTH_SHORT).show()
                 true
             }
-            R.id.menu_ajustes -> {
-                navController.navigate(R.id.ajustesFragment)
+            R.id.menu_filter -> {
+                Toast.makeText(this, "Filtros - Próximamente", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.menu_logout -> {
+                performLogout()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    // Permitir navegación hacia atrás con el botón de la Toolbar
+    private fun performLogout() {
+        // Limpiar SharedPreferences
+        val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        prefs.edit().clear().apply()
+
+        // Volver a LoginActivity
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
 
@@ -90,15 +151,12 @@ class MainActivity : AppCompatActivity() {
             .setCancelable(true)
             .create()
 
-        // Fondo transparente para que se vea el diseño personalizado
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        // Configurar botón Cancelar
         dialogBinding.btnCancelar.setOnClickListener {
             dialog.dismiss()
         }
 
-        // Configurar botón Añadir
         dialogBinding.btnAnadir.setOnClickListener {
             val nombre = dialogBinding.etNombre.text.toString().trim()
             val categoria = dialogBinding.etCategoria.text.toString().trim()
@@ -106,9 +164,8 @@ class MainActivity : AppCompatActivity() {
             val urlPerfil = dialogBinding.etUrlPerfil.text.toString().trim()
             val urlFoto = dialogBinding.etUrlFoto.text.toString().trim()
 
-            // Validación básica
             if (nombre.isEmpty()) {
-                Toast.makeText(this, " El nombre es obligatorio", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "El nombre es obligatorio", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -117,21 +174,18 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Convertir plataformas separadas por coma en lista
             val plataformas = if (plataformasText.isNotEmpty()) {
                 plataformasText.split(",").map { it.trim() }
             } else {
-                listOf("Twitch") // Por defecto
+                listOf("Twitch")
             }
 
-            // Crear nuevo streamer
             val nuevoId = (controller.lista.maxOfOrNull { it.id } ?: 0) + 1
 
-            // Determinar qué foto usar
             val fotoFinal: Any = if (urlFoto.isNotEmpty()) {
-                urlFoto  // URL de internet
+                urlFoto
             } else {
-                R.drawable.ic_launcher_background  // Imagen local por defecto
+                R.drawable.ic_launcher_background
             }
 
             val nuevoStreamer = Streamer(
@@ -143,28 +197,23 @@ class MainActivity : AppCompatActivity() {
                 foto = fotoFinal
             )
 
-            // Añadir a la lista
             controller.addStreamer(nuevoStreamer)
-
-            Toast.makeText(this, "nombre añadido correctamente", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "$nombre añadido correctamente", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 
         dialog.show()
     }
 
-
     fun showEditStreamerDialog(position: Int) {
         val streamer = controller.lista[position]
         val dialogBinding = com.example.streamersapp.databinding.DialogEditStreamerBinding.inflate(LayoutInflater.from(this))
 
-        // Pre-rellenar los campos con los datos actuales
         dialogBinding.etNombre.setText(streamer.nombre)
         dialogBinding.etCategoria.setText(streamer.categoria)
         dialogBinding.etPlataformas.setText(streamer.plataformas.joinToString(", "))
         dialogBinding.etUrlPerfil.setText(streamer.urlPerfil)
 
-        // Si la foto es String (URL), mostrarla
         if (streamer.foto is String) {
             dialogBinding.etUrlFoto.setText(streamer.foto as String)
         }
@@ -176,11 +225,9 @@ class MainActivity : AppCompatActivity() {
 
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        // Configurar botón Cancelar
         dialogBinding.btnCancelar.setOnClickListener {
             dialog.dismiss()
         }
-
 
         dialogBinding.btnGuardar.setOnClickListener {
             val nombre = dialogBinding.etNombre.text.toString().trim()
@@ -189,32 +236,28 @@ class MainActivity : AppCompatActivity() {
             val urlPerfil = dialogBinding.etUrlPerfil.text.toString().trim()
             val urlFoto = dialogBinding.etUrlFoto.text.toString().trim()
 
-
             if (nombre.isEmpty()) {
                 Toast.makeText(this, "El nombre es obligatorio", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (categoria.isEmpty()) {
-                Toast.makeText(this, " La categoría es obligatoria", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "La categoría es obligatoria", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Convertir plataformas separadas por coma en lista
             val plataformas = if (plataformasText.isNotEmpty()) {
                 plataformasText.split(",").map { it.trim() }
             } else {
                 listOf("Twitch")
             }
 
-            // Determinar qué foto usar
             val fotoFinal: Any = when {
-                urlFoto.isNotEmpty() -> urlFoto  // Nueva URL
-                streamer.foto is String -> streamer.foto  // Mantener URL anterior
-                else -> streamer.foto  // Mantener drawable anterior
+                urlFoto.isNotEmpty() -> urlFoto
+                streamer.foto is String -> streamer.foto
+                else -> streamer.foto
             }
 
-            // Crear streamer actualizado (mantener el mismo ID)
             val streamerActualizado = Streamer(
                 id = streamer.id,
                 nombre = nombre,
@@ -224,9 +267,7 @@ class MainActivity : AppCompatActivity() {
                 foto = fotoFinal
             )
 
-            // Actualizar en la lista
             controller.editStreamer(position, streamerActualizado)
-
             Toast.makeText(this, "$nombre actualizado correctamente", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
@@ -234,11 +275,9 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
-
     fun showDeleteConfirmationDialog(position: Int) {
         val streamer = controller.lista[position]
         val dialogBinding = com.example.streamersapp.databinding.DialogDeleteConfirmationBinding.inflate(LayoutInflater.from(this))
-
 
         dialogBinding.tvMessage.text = "¿Deseas borrar a ${streamer.nombre}?"
 
@@ -249,11 +288,9 @@ class MainActivity : AppCompatActivity() {
 
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-
         dialogBinding.btnNo.setOnClickListener {
             dialog.dismiss()
         }
-
 
         dialogBinding.btnSi.setOnClickListener {
             controller.deleteStreamer(position)

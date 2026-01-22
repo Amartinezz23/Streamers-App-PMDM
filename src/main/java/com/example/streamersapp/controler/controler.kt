@@ -1,11 +1,16 @@
 package com.example.streamersapp.controler
 
 import android.content.Context
-import android.widget.Toast
+import android.os.Bundle
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import com.example.streamersapp.MainActivity
+import com.example.streamersapp.R
 import com.example.streamersapp.adapter.AdapterStreamer
 import com.example.streamersapp.models.Streamer
 import com.example.streamersapp.objects_models.Repository.listStreamers
+import com.example.streamersapp.StreamersFragmentDirections
+
 
 class Controller(private val context: Context) {
 
@@ -18,12 +23,13 @@ class Controller(private val context: Context) {
         { position -> onDelete(position) }
     )
 
+
     private fun onViewProfile(position: Int) {
-        Toast.makeText(
-            context,
-            "Ver perfil de ${lista[position].nombre}",
-            Toast.LENGTH_SHORT
-        ).show()
+        val streamer = lista[position]
+        val activity = context as MainActivity
+
+        val action = StreamersFragmentDirections.actionStreamersFragmentToDetailFragment(streamer.id)
+        activity.findNavController(R.id.nav_host_fragment).navigate(action)
     }
 
     private fun onEdit(position: Int) {

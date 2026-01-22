@@ -15,7 +15,6 @@
         android:background="#F3F0FF"
         android:padding="12dp">
 
-        <!-- FOTO DEL STREAMER -->
         <ImageView
             android:id="@+id/imgStreamer"
             android:layout_width="120dp"
@@ -26,7 +25,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_launcher_background" />
 
-        <!-- NOMBRE -->
         <TextView
             android:id="@+id/txtNombre"
             android:layout_width="0dp"
@@ -40,7 +38,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Ibai Llanos" />
 
-        <!-- CATEGORIA -->
         <TextView
             android:id="@+id/txtCategoria"
             android:layout_width="0dp"
@@ -52,7 +49,6 @@
             app:layout_constraintTop_toBottomOf="@id/txtNombre"
             tools:text="Algo" />
 
-        <!-- ICONOS DE PLATAFORMAS -->
         <LinearLayout
             android:id="@+id/layoutPlataformas"
             android:layout_width="wrap_content"
@@ -87,7 +83,6 @@
                 tools:src="@drawable/kick" />
         </LinearLayout>
 
-        <!-- BOTONES DE ACCION -->
         <LinearLayout
             android:id="@+id/layoutBotones"
             android:layout_width="wrap_content"

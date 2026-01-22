@@ -7,7 +7,7 @@
     android:background="#E0D4FF"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <!-- NavHostFragment que contendrá los fragmentos -->
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"

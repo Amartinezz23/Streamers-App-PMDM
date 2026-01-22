@@ -3,14 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_favoritos"
-        android:icon="@android:drawable/btn_star_big_on"
-        android:title="Favoritos"
-        app:showAsAction="always" />
+        android:id="@+id/menu_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Buscar"
+        app:showAsAction="always"
+        app:iconTint="@android:color/white" />
 
     <item
-        android:id="@+id/menu_ajustes"
-        android:title="Ajustes"
-        app:showAsAction="never" />
+        android:id="@+id/menu_filter"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="Filtrar"
+        app:showAsAction="always"
+        app:iconTint="@android:color/white" />
+
+    <item
+        android:id="@+id/menu_logout"
+        android:icon="@android:drawable/ic_lock_power_off"
+        android:title="Cerrar Sesión"
+        app:showAsAction="always"
+        app:iconTint="@android:color/white" />
 
 </menu>

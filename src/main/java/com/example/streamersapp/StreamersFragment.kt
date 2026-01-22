@@ -16,10 +16,10 @@ class StreamersFragment : Fragment(R.layout.fragment_streamers) {
 
         binding = FragmentStreamersBinding.bind(view)
 
-        // Referencia a la Activity
+
         val activity = requireActivity() as MainActivity
 
-        // RecyclerView
+
         binding.myRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = activity.controller.adapter
@@ -27,7 +27,7 @@ class StreamersFragment : Fragment(R.layout.fragment_streamers) {
             setHasFixedSize(true)
         }
 
-        // Botón flotante para añadir streamer
+
         binding.btnAdd.setOnClickListener {
             activity.showAddStreamerDialog()
         }
